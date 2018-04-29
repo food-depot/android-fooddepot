@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Food Depot</string>
+
+    <!-- Strings related to login -->
+    <string name="add_item">Add Item</string>
+    <string name="read_Item">Read Item</string>
+    <string name="delete_item">Delete Item</string>
+    <string name="action_sign_in">Sign In</string>
+
+</resources>
