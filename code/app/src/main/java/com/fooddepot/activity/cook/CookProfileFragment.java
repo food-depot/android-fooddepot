@@ -49,6 +49,7 @@ public class CookProfileFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         description = (EditText) getView().findViewById(R.id.desc_edtxt);
         description.setMovementMethod(new ScrollingMovementMethod());
+        uploadprofilePic();
     }
 
     public void uploadprofilePic(){
