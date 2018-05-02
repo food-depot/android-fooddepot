@@ -21,6 +21,7 @@ public class RoleActivity extends AppCompatActivity {
     }
 
     public void onClickOrder(View view){
-
+        Intent i = new Intent(this,OrderActivity.class);
+        startActivity(i);
     }
 }
