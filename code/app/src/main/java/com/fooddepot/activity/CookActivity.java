@@ -16,7 +16,7 @@ public class CookActivity extends AppCompatActivity {
     Toolbar toolbar;
     ViewPager viewPager;
     PageAdapter pageAdapter;
-    TabItem profile,menu,orders,ratings;
+    TabItem profile,menu,orders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,6 @@ public class CookActivity extends AppCompatActivity {
         profile = (TabItem)findViewById(R.id.profile);
         menu = (TabItem)findViewById(R.id.menu);
         orders = (TabItem)findViewById(R.id.orders);
-        ratings = (TabItem)findViewById(R.id.ratings);
 
         viewPager =(ViewPager) findViewById(R.id.viewPager);
 
@@ -39,6 +38,7 @@ public class CookActivity extends AppCompatActivity {
         viewPager.setAdapter(pageAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+        tabLayout.setupWithViewPager(viewPager);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -47,9 +47,9 @@ public class CookActivity extends AppCompatActivity {
                 } else if (tab.getPosition() == 2) {
                     new TabLayout.TabLayoutOnPageChangeListener(tabLayout);
                 }
-                else if (tab.getPosition() == 2) {
-                    new TabLayout.TabLayoutOnPageChangeListener(tabLayout);
-                }
+//                else if (tab.getPosition() == 2) {
+//                    new TabLayout.TabLayoutOnPageChangeListener(tabLayout);
+//                }
                 else {
                     tab.select();
                 }
@@ -66,6 +66,8 @@ public class CookActivity extends AppCompatActivity {
 
             }
         });
+//        tabLayout.setupWithViewPager(viewPager);
+
     }
 }
 

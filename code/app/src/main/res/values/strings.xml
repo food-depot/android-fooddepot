@@ -40,6 +40,14 @@
         <item>Vegan</item>
         <item>Other</item>
     </string-array>
+    <string-array name="order_status">
+        <item>Ordered</item>
+        <item>Preparing</item>
+        <item>Ready for pickup</item>
+        <item>Delivered</item>
+        <item>Closed</item>
+    </string-array>
+
     <string name="title_activity_order">OrderActivity</string>
     <string name="title_activity_filter">FilterActivity</string>
 

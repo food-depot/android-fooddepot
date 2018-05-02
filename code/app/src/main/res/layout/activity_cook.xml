@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:background="@android:color/background_light"
     android:orientation="vertical">
 
@@ -25,11 +26,6 @@
         app:tabSelectedTextColor="@android:color/white"
         app:tabTextColor="@color/translucent_white">
 
-        <android.support.design.widget.TabItem
-            android:id="@+id/profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Profile" />
 
         <android.support.design.widget.TabItem
             android:id="@+id/menu"
@@ -44,10 +40,12 @@
             android:text="Orders" />
 
         <android.support.design.widget.TabItem
-            android:id="@+id/ratings"
+            android:id="@+id/profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ratings" />
+            android:text="Profile" />
+
+
 
 
     </android.support.design.widget.TabLayout>
