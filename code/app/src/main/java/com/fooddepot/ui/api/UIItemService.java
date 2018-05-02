@@ -11,5 +11,6 @@ import java.util.Map;
 
 public interface UIItemService {
     void displayAllItems(List<Item> items);
+    void displayItem(Item item);
 
 }

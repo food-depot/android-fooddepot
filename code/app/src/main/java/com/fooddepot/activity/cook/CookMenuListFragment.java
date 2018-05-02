@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class CookMenuListFragment extends Fragment {
 
     ListView menuList;
     FloatingActionButton addMenu;
+    String ids[]={"-LBV6OZmf8fs7mm0Oiq7","-LBEghqc2TUEUajMCpvq","-LBEh2mBpGksQC1cEbsU","-LBEh8zC0TkyanZ6hMPQ","-LBHG4uwj5RPulChO1Wx"};
     String item_names[]={"Pizza","Pasta","Burger","Salad","Biriyani"};
     String qntys[]={"1","1","3","2","1"};
     String prices[]={"$4.99","$6.99","$5.98","$4.89","$9.80"};
@@ -71,9 +73,10 @@ public class CookMenuListFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), AddMenuActivity.class);
 //                Bundle bundle = new Bundle();
-//                bundle.putString(ITEM_NAME, data.get(position).get("Menu"));
-//                bundle.putString(IMAGE_NAME, data.get(position).get("Image"));
-//                intent.putExtras(bundle);
+                intent.putExtra("ITEM_ID", ids[position]);
+                Log.d("position passed",position+"");
+                Log.d("id passed",ids[position]);
+
                 startActivity(intent);
 
 

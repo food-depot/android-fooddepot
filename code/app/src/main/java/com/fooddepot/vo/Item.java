@@ -14,15 +14,23 @@ public class Item {
     int quantity;
     String photoPath;
     String classification;
-    String date;
-    String schedule;
+
+    String dateStart;
+    String dateEnd;
+    String timeStart;
+    String timeEnd;
+//    String schedule;
+    long reviews;
+
     Cook cook;
 
 
     public Item(){
 
     }
-    public Item(String name, String category, String description, float price, int quantity, String photoPath, String classification, String date, String schedule, Cook cook) {
+    public Item(String name, String category, String description, float price, int quantity,
+                String photoPath, String classification, String dateStart,String dateEnd,
+                String timeStart,String timeEnd,long reviews, Cook cook) {
         this.name = name;
         this.category = category;
         this.description = description;
@@ -30,9 +38,14 @@ public class Item {
         this.quantity = quantity;
         this.photoPath = photoPath;
         this.classification = classification;
-        this.date = date;
-        this.schedule = schedule;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.dateStart = dateStart;
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
+        this.reviews = reviews;
         this.cook = cook;
+
     }
 
     public String getName() {
@@ -44,7 +57,7 @@ public class Item {
     }
 
     public String getCategory() {
-        return category;
+        return this.category;
     }
 
     public void setCategory(String category) {
@@ -91,21 +104,61 @@ public class Item {
         this.classification = classification;
     }
 
-    public String getDate() {
-        return date;
+    public String getDateStart() {
+        return dateStart;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDateStart(String dateStart) {
+        this.dateStart = dateStart;
     }
 
-    public String getSchedule() {
-        return schedule;
+    public String getDateEnd() {
+        return dateEnd;
     }
 
-    public void setSchedule(String schedule) {
-        this.schedule = schedule;
+    public void setDateEnd(String dateEnd) {
+        this.dateEnd = dateEnd;
     }
+
+    public String getTimeStart() {
+        return timeStart;
+    }
+
+    public void setTimeStart(String timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public String getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(String timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
+    public long getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(long reviews) {
+        this.reviews = reviews;
+    }
+
+//    public String getDate() {
+//        return date;
+//    }
+//
+//    public void setDate(String date) {
+//        this.date = date;
+//    }
+//
+//    public String getSchedule() {
+//        return schedule;
+//    }
+//
+//    public void setSchedule(String schedule) {
+//        this.schedule = schedule;
+//    }
 
     public Cook getCook() {
         return cook;

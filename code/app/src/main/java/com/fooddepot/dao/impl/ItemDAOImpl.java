@@ -43,15 +43,15 @@ public class ItemDAOImpl implements ItemDAO {
         try{
             System.out.println("Lis of all items..");
 
-            DAOUtil.getDatabaseReference().child(itemPath).addValueEventListener(
+            DAOUtil.getDatabaseReference().child(PathUtil.getItemIdPath(itemId)).addValueEventListener(
                     new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            GenericTypeIndicator< Map<String,Item>> genericTypeIndicator = new GenericTypeIndicator< Map<String,Item>>() {
+                            GenericTypeIndicator<Item> genericTypeIndicator = new GenericTypeIndicator<Item>() {
                             };
-                            Map<String,Item> attendanceInfo = dataSnapshot.getValue(genericTypeIndicator);
-                            System.out.println("Lis of all items.."+attendanceInfo);
-                            //uiItemService.displayAllItems(attendanceInfo);
+                            Item attendanceInfo = dataSnapshot.getValue(genericTypeIndicator);
+                            System.out.println("Lis of all item in daoimpl.."+attendanceInfo.getCategory());
+                            uiItemService.displayItem(attendanceInfo);
 
 
                         }

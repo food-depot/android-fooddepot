@@ -43,9 +43,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void update(String itemId, UIItemService uiItemService) {
+    public void update(String itemId, Item item) {
         try {
-            itemDAO.read(itemId,uiItemService);
+            itemDAO.update(itemId,item);
         } catch (ItemException e) {
             e.printStackTrace();
         }

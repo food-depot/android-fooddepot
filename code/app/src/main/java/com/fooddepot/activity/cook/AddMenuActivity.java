@@ -11,7 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,33 +19,47 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.fooddepot.R;
+import com.fooddepot.service.api.ItemService;
+
+import com.fooddepot.service.impl.ItemServiceImpl;
+import com.fooddepot.storage.impl.ProfilePicServiceImpl;
+import com.fooddepot.ui.api.UIItemService;
+import com.fooddepot.vo.Cook;
+import com.fooddepot.vo.Item;
+
 
 import java.util.Calendar;
+import java.util.List;
+import java.util.UUID;
 
-public class AddMenuActivity extends AppCompatActivity {
+public class AddMenuActivity extends AppCompatActivity implements UIItemService, View.OnClickListener {
 
     private static final int RESULT_LOAD_IMAGE=1;
-    Toolbar newtoolbar;
 
     static Button datebtn, timebtn, datetill,timetill,quantitybtn,photo_btn,cnclbtn,save_btn;
     ImageView imageView;
     int year_s, month_s, day_s,hour_s,min_s;
     static final int CALENDAR_ID=0;
-    EditText date;
-    DatePickerDialog datePickerDialog;
+    EditText name,price,description;
+    Spinner category, classification;
+    ItemService itemService = null;
+    String ItemID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        newtoolbar=(Toolbar)findViewById(R.id.toolbar);
-//        newtoolbar.setTitle("Food Depot");
-//        setSupportActionBar(newtoolbar);
-
-
         setContentView(R.layout.activity_add_menu);
+        Intent intent = getIntent();
+
+        name=(EditText)findViewById(R.id.itemName_edtxt);
+        category=(Spinner)findViewById(R.id.cuisine);
+        price=(EditText)findViewById(R.id.price_edtxt);
+        classification=(Spinner)findViewById(R.id.category_spn);
+        description=(EditText)findViewById(R.id.itmDsc_edtxt);
         datebtn = (Button)findViewById(R.id.date_btn);
         timebtn = (Button)findViewById(R.id.time_btn);
         datetill = (Button)findViewById(R.id.datetil_btn);
@@ -53,7 +67,19 @@ public class AddMenuActivity extends AppCompatActivity {
         quantitybtn = (Button)findViewById(R.id.qnty_btn);
         photo_btn = (Button)findViewById(R.id.photo_btn);
         cnclbtn = (Button)findViewById(R.id.cancel_btn);
+        cnclbtn.setOnClickListener(this);
         save_btn = (Button)findViewById(R.id.save_btn);
+        save_btn.setOnClickListener(this);
+
+        uploadPhoto();
+
+        if(intent.hasExtra("ITEM_ID")){
+            itemService = new ItemServiceImpl();
+            ItemID= intent.getStringExtra("ITEM_ID");
+            Log.d("Id received",ItemID);
+            itemService.read(ItemID, this);
+            save_btn.setText("Update");
+        }
     }
 
     public void uploadPhoto(){
@@ -82,6 +108,8 @@ public class AddMenuActivity extends AppCompatActivity {
         if(requestCode==RESULT_LOAD_IMAGE && resultCode==RESULT_OK && data !=null){
             Uri selectedImage=data.getData();
             imageView.setImageURI(selectedImage);
+            ProfilePicServiceImpl profilePicService = new ProfilePicServiceImpl();
+            profilePicService.loadProfilePic(this,imageView,"images/"+ UUID.randomUUID().toString());
         }
     }
 
@@ -128,11 +156,77 @@ public class AddMenuActivity extends AppCompatActivity {
     public void selectqnty (View view){
         mQuantitySetListener newFragment = new mQuantitySetListener();
         newFragment.show(getSupportFragmentManager(), "time picker");
-//        newFragment.setValueChangeListener(this);
-//        newFragment.show(getSupportFragmentManager(), "time picker");
     }
 
+    @Override
+    public void onClick(View view) {
 
+        switch(view.getId()){
+            case R.id.save_btn://getText(R.id.save_btn):
+                itemService = new ItemServiceImpl();
+                Cook cook = new Cook("uid1", "name1", "address1", "email1", "phoneNumber1", "profilePicPath1");
+
+                Item item = new Item(name.getText().toString(), category.getSelectedItem().toString(), description.getText().toString(),
+                        Float.parseFloat(price.getText().toString()), Integer.parseInt(quantitybtn.getText().toString()),
+                        "phototpath",classification.getSelectedItem().toString(),
+                        datebtn.getText().toString(),datetill.getText().toString(), timebtn.getText().toString(), timetill.getText().toString(),0,cook);
+
+                if(ItemID!=null){
+                    itemService.update(ItemID,item);
+                }
+                else
+                    itemService.add(item);
+                break;
+        }
+
+    }
+
+    @Override
+    public void displayAllItems(List<Item> items) {
+
+    }
+
+    @Override
+    public void displayItem(Item item) {
+        String categories[]=getResources().getStringArray(R.array.cuisine);
+        int catPos=0;
+        for(int i=0; i < categories.length; i++)
+            if(categories[i].contains(item.getCategory()))
+                catPos = i;
+
+        String classifications[]=getResources().getStringArray(R.array.category);
+        int clasPos=0;
+        for(int i=0; i < classifications.length; i++)
+            if(classifications[i].equals(item.getClassification()))
+                clasPos = i;
+
+        name.setText(item.getName());
+        category.setSelection(catPos);
+        description.setText(item.getDescription());
+        price.setText(item.getPrice()+"");
+        quantitybtn.setText(item.getQuantity()+"");
+        //set image path
+        classification.setSelection(clasPos);
+        datebtn.setText(item.getDateStart());
+        datetill.setText(item.getDateEnd());
+        timebtn.setText(item.getTimeStart());
+        timetill.setText(item.getTimeEnd());
+
+
+        Log.d("name",item.getName());
+//        Log.d("category",category.getSelectedItem().toString());
+        Log.d("description",item.getDescription());
+//        Log.d("price","camehere");
+//        Log.d("quantitybtn",items.getCategory());
+//        Log.d("classification","camehere");
+//        Log.d("datebtn","camehere");
+//        Log.d("datetill",items.getCategory());
+//        Log.d("timebtn","camehere");
+//        Log.d("timetill","camehere");
+////        items.setCategory("CatNew");
+////        itemService.update(ItemID,items);
+////        items.getCategory();
+    }
 
 
     class mDateSetListener implements DatePickerDialog.OnDateSetListener {
@@ -215,7 +309,7 @@ public class AddMenuActivity extends AppCompatActivity {
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             final NumberPicker numberPicker = new NumberPicker(getActivity());
             numberPicker.setMinValue(1);
-            numberPicker.setMaxValue(100);
+            numberPicker.setMaxValue(20);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Select quantity");
