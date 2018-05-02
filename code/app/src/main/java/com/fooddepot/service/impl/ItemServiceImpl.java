@@ -41,4 +41,13 @@ public class ItemServiceImpl implements ItemService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void update(String itemId, UIItemService uiItemService) {
+        try {
+            itemDAO.read(itemId,uiItemService);
+        } catch (ItemException e) {
+            e.printStackTrace();
+        }
+    }
 }

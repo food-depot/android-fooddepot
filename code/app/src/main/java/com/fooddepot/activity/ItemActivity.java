@@ -1,7 +1,6 @@
 package com.fooddepot.activity;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +13,6 @@ import com.fooddepot.vo.Cook;
 import com.fooddepot.vo.Item;
 
 import java.util.List;
-import java.util.Map;
 
 public class ItemActivity extends Activity implements UIItemService, View.OnClickListener {
 
@@ -61,6 +59,11 @@ public class ItemActivity extends Activity implements UIItemService, View.OnClic
 
             case R.id.delete_item:
                 itemService.delete("-LBEghqNuJVUcauzr87");
+                break;
+            case R.id.update_item:
+                Cook cook1 = new Cook("uid1", "name1", "address1", "email1", "phoneNumber1", "profilePicPath1");
+                Item item1 = new Item("name1updated", "cat1", "desc1", 2, 1, "path1", "class1", "12345", "sched1", cook1);
+                itemService.update("-LBEghqNuJVUcauzr87", item1);
                 break;
 
 

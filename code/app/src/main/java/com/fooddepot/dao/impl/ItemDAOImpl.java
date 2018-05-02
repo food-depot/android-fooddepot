@@ -77,4 +77,15 @@ public class ItemDAOImpl implements ItemDAO {
         String itemIDPath =  PathUtil.getItemIdPath(id);
         DAOUtil.getDatabaseReference().child(itemIDPath).removeValue();
     }
+
+    @Override
+    public void update(String id, Item item) throws ItemException{
+        try{
+            DAOUtil.getDatabaseReference().child(PathUtil.getItemIdPath(id)).setValue(item);
+            //DAOUtil.getDatabaseReference().child(itemPath).child(DAOUtil.getDatabaseReference().push().getKey()).setValue(item);
+        }catch(Exception exception){
+            Log.e(TAG,"Error adding item",exception);
+            throw new ItemException("Error",exception);
+        }
+    }
 }
