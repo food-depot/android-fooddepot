@@ -22,12 +22,18 @@ import android.widget.Toast;
 import com.fooddepot.R;
 import com.fooddepot.activity.DetailActivity;
 import com.fooddepot.activity.RoleActivity;
+import com.fooddepot.service.api.ItemService;
+import com.fooddepot.service.impl.ItemServiceImpl;
+import com.fooddepot.ui.api.UIItemService;
+import com.fooddepot.vo.Item;
+
+import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CookMenuListFragment extends Fragment {
+public class CookMenuListFragment extends Fragment implements UIItemService {
 
     ListView menuList;
     FloatingActionButton addMenu;
@@ -39,6 +45,10 @@ public class CookMenuListFragment extends Fragment {
     String desc[]={"servers 2, comes with pepperoni, mushrooms, onions, black olives, green peppers toppings","servers 2, comes with pepperoni, mushrooms, onions, black olives, green peppers toppings","servers 2, comes with pepperoni, mushrooms, onions, black olives, green peppers toppings","servers 2, comes with pepperoni, mushrooms, onions, black olives, green peppers toppings","servers 2, comes with pepperoni, mushrooms, onions, black olives, green peppers toppings"};
     int imgs[]={R.drawable.food_default,R.drawable.food_default,R.drawable.food_default,R.drawable.food_default,R.drawable.food_default};
     float ratings[] ={2.0f,3.5f,4f,4.5f,5f};
+    List<Item> itemList;
+
+    ItemService itemService = null;
+    int itemSize=0;
 
 
 
@@ -63,6 +73,12 @@ public class CookMenuListFragment extends Fragment {
         CustomAdapter menuFragment = new CustomAdapter();
         menuList.setAdapter(menuFragment);
 
+
+        itemService = new ItemServiceImpl();
+        itemService.readAll("-LBcVcgEgfsmxlrMD4n8", this);
+
+
+
         addMenu();
 
         menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -72,7 +88,6 @@ public class CookMenuListFragment extends Fragment {
                                     int position, long id) {
 
                 Intent intent = new Intent(getActivity(), AddMenuActivity.class);
-//                Bundle bundle = new Bundle();
                 intent.putExtra("ITEM_ID", ids[position]);
                 Log.d("position passed",position+"");
                 Log.d("id passed",ids[position]);
@@ -97,11 +112,33 @@ public class CookMenuListFragment extends Fragment {
 
     }
 
+    @Override
+    public void displayAllItems(List<Item> items) {
+        itemList=items;
+        itemSize=itemList.size();
+        System.out.println("Lis of all item in menu list fragment..");
+        for(Item i:items){
+            Log.d("Menu list",i.getName());
+           Log.d("Menu list",i.getDescription());
+        }
+
+//        CustomAdapter menuFragment = new CustomAdapter();
+//        menuList.setAdapter(menuFragment);
+    }
+
+    @Override
+    public void displayItem(Item item) {
+
+
+    }
+
     private class CustomAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return item_names.length;
+            return
+                    item_names.length;
+                    
         }
 
         @Override
@@ -116,6 +153,8 @@ public class CookMenuListFragment extends Fragment {
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
+
+
             view = getLayoutInflater().inflate(R.layout.fragment_cook_menu_adapter,null);
             TextView itemName_txtvw = (TextView)view.findViewById(R.id.itemName_txtvw);
             TextView qnty_txtvw = (TextView)view.findViewById(R.id.qnty_txtvw);
@@ -124,14 +163,23 @@ public class CookMenuListFragment extends Fragment {
             TextView itemdesc = (TextView)view.findViewById(R.id.itemdesc);
             RatingBar item_rating = (RatingBar)view.findViewById(R.id.item_rating);
             ImageView food_img = (ImageView)view.findViewById(R.id.food_img);
+
+//            itemName_txtvw.setText(itemList.get(i).getName());
+//            qnty_txtvw.setText(itemList.get(i).getQuantity());
+//            price_txtvw.setText(itemList.get(i).getPrice()+"/unit");
+//            availableuntil_txtvw.setText(itemList.get(i).getDateEnd() + " "+ itemList.get(i).getTimeEnd());
+//            itemdesc.setText(itemList.get(i).getDescription());
+
+
+
             itemName_txtvw.setText(item_names[i]);
             qnty_txtvw.setText(qntys[i]);
             price_txtvw.setText(prices[i]+"/unit");
             availableuntil_txtvw.setText(avlbltil[i]);
             itemdesc.setText(desc[i]);
 
-            item_rating.setRating(ratings[i]);
-            food_img.setImageResource(imgs[i]);
+            item_rating.setRating(4F);
+            food_img.setImageResource(R.drawable.food_default);
             return view;
         }
     }

@@ -13,5 +13,6 @@ public interface ItemDAO {
     void read(String itemId,UIItemService uiItemService) throws ItemException;
     void delete(String id) throws Exception;
     void update (String id, Item item) throws ItemException;
+    void readAll(String cookId,UIItemService uiItemService) throws ItemException;
 
 }

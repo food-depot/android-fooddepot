@@ -1,6 +1,7 @@
 package com.fooddepot.ui.api;
 
 import com.fooddepot.vo.Item;
+import com.fooddepot.vo.User;
 
 import java.util.List;
 import java.util.Map;
@@ -12,5 +13,6 @@ import java.util.Map;
 public interface UIItemService {
     void displayAllItems(List<Item> items);
     void displayItem(Item item);
+//    void displayUser(User user);
 
 }

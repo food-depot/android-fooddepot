@@ -15,6 +15,15 @@ public class Item {
     String photoPath;
     String classification;
 
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+
+    String itemId;
     String dateStart;
     String dateEnd;
     String timeStart;

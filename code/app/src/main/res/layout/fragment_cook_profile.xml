@@ -192,14 +192,13 @@
                 android:background="@drawable/edittextbg" />
 
             <Button
-                android:id="@+id/verification_btn"
+                android:id="@+id/saveProfile_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/desc_edtxt"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:text="  Save  "
-                android:onClick="getVerificationCode"
                 android:background="@color/savebtn"
                 android:textColor="@android:color/background_light"/>
 

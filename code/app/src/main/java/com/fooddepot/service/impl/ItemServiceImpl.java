@@ -43,6 +43,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public void readAll(String cookId, UIItemService uiItemService) {
+        try {
+            itemDAO.readAll(cookId,uiItemService);
+        } catch (ItemException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void update(String itemId, Item item) {
         try {
             itemDAO.update(itemId,item);

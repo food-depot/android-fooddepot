@@ -10,7 +10,9 @@ public interface CommonConstants {
 
     String ITEMS_PATH = "items";
     String ROOT_PATH = "fooddepot";
-
+    String COOK_PATH = "cook";
+    String UID = "cook";
+    String USER_PATH = "user";
 
     String SEPARATOR = "/";
 

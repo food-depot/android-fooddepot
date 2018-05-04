@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,12 @@ public class ItemDAOImpl implements ItemDAO {
     @Override
     public void add(Item item) throws ItemException{
         try{
-            DAOUtil.getDatabaseReference().child(itemPath).child(DAOUtil.getDatabaseReference().push().getKey()).setValue(item);
+            String itemId = DAOUtil.getDatabaseReference().push().getKey();
+            item.setItemId(itemId);
+            DAOUtil.getDatabaseReference().child(itemPath).child(itemId).setValue(item);
+
+            DAOUtil.getDatabaseReference().child(PathUtil.getCookItemPath(item.getCook().getUid())).child(itemId).setValue(item);
+
             //DAOUtil.getDatabaseReference().child(itemPath).child(DAOUtil.getDatabaseReference().push().getKey()).setValue(item);
         }catch(Exception exception){
             Log.e(TAG,"Error adding item",exception);
@@ -62,7 +68,7 @@ public class ItemDAOImpl implements ItemDAO {
                         }
                     });
         }catch(Exception exception){
-            Log.e(TAG,"Error getting attendance",exception);
+            Log.e(TAG,"Error getting item",exception);
             throw new ItemException("Error",exception);
 
         }
@@ -87,5 +93,47 @@ public class ItemDAOImpl implements ItemDAO {
             Log.e(TAG,"Error adding item",exception);
             throw new ItemException("Error",exception);
         }
+    }
+
+
+    @Override
+    public void readAll(String cookId, final UIItemService uiItemService) throws ItemException {
+
+        try{
+            System.out.println("List of all items..");
+
+            DAOUtil.getDatabaseReference().child(PathUtil.getCookItemPath(cookId)).addValueEventListener(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            GenericTypeIndicator<Map<String,Item>> genericTypeIndicator = new GenericTypeIndicator<Map<String,Item>>() {
+                            };
+                            Map<String,Item> itemMap = dataSnapshot.getValue(genericTypeIndicator);
+                            List<Item> itemList = new ArrayList<>();
+                            for(String key:itemMap.keySet()){
+                                Item item = itemMap.get(key);
+
+                                System.out.println("Lis of all item in daoimpl.."+item.getName());
+
+                                itemList.add(item);
+                            }
+
+                            uiItemService.displayAllItems(itemList);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+        }catch(Exception exception){
+            Log.e(TAG,"Error getting item",exception);
+            throw new ItemException("Error",exception);
+
+        }
+
+
+
+
     }
 }

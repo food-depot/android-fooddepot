@@ -164,8 +164,8 @@ public class AddMenuActivity extends AppCompatActivity implements UIItemService,
         switch(view.getId()){
             case R.id.save_btn://getText(R.id.save_btn):
                 itemService = new ItemServiceImpl();
-                Cook cook = new Cook("uid1", "name1", "address1", "email1", "phoneNumber1", "profilePicPath1");
-
+                Cook cook = new Cook();
+                cook.setUid("-LBcqrQy6acXwhclphBA");
                 Item item = new Item(name.getText().toString(), category.getSelectedItem().toString(), description.getText().toString(),
                         Float.parseFloat(price.getText().toString()), Integer.parseInt(quantitybtn.getText().toString()),
                         "phototpath",classification.getSelectedItem().toString(),

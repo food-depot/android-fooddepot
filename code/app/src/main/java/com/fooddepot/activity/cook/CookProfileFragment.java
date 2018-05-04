@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.fooddepot.R;
+import com.fooddepot.service.api.CookService;
+import com.fooddepot.service.impl.CookServiceImpl;
+import com.fooddepot.service.impl.ItemServiceImpl;
+import com.fooddepot.ui.api.UICookService;
+import com.fooddepot.vo.Cook;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -26,10 +32,11 @@ import static android.app.Activity.RESULT_OK;
 public class CookProfileFragment extends Fragment {
 
 
-    EditText description;
-    Button profilepic_btn;
+    EditText description, nickname,addressLine1,addressLine2,state,country,zipcode;
+    Button profilepic_btn,saveProfile_btn;
     ImageView profileImg;
     private static final int RESULT_LOAD_IMAGE=2;
+    CookService cookService = null;
 
     public CookProfileFragment() {
         // Required empty public constructor
@@ -49,7 +56,30 @@ public class CookProfileFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         description = (EditText) getView().findViewById(R.id.desc_edtxt);
         description.setMovementMethod(new ScrollingMovementMethod());
+        nickname=(EditText)getView().findViewById(R.id.nickName_edtxt);
+        addressLine1=(EditText)getView().findViewById(R.id.adrsline1_edtxt);
+        addressLine2=(EditText)getView().findViewById(R.id.adrsline2_edtxt);
+        state=(EditText)getView().findViewById(R.id.state_edtxt);
+        country=(EditText)getView().findViewById(R.id.cntry_edtxt);
+        zipcode=(EditText)getView().findViewById(R.id.zip_edtxt);
         uploadprofilePic();
+        saveProfile();
+    }
+
+    public void saveProfile(){
+        saveProfile_btn =(Button)getView().findViewById(R.id.saveProfile_btn);
+        saveProfile_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cookService=new CookServiceImpl();
+                Cook cook =new Cook("-LBcVcgEgfsmxlrMD4n8",nickname.getText().toString(),addressLine1.getText().toString(),
+                        addressLine2.getText().toString(),state.getText().toString(),country.getText().toString(),
+                        zipcode.getText().toString(),description.getText().toString(),
+                        "name","email","phoneno","profilepicpath");
+                cookService.add(cook);
+            }
+        });
+
     }
 
     public void uploadprofilePic(){
