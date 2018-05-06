@@ -12,15 +12,43 @@ public class Order {
     private String quantity;
     private String totalPrice;
     private boolean isPaid;
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    private String userPhone;
+
     private Item item;
-    private User user;
+    private String userId;
 
     public Order(){
 
     }
 
     public Order(String orderStatus, String orderDate, String orderTime,
-                 String quantity, String totalPrice, boolean isPaid, Item item, User user) {
+                 String quantity, String totalPrice, boolean isPaid, Item item, String userId, String userName, String userPhone) {
         this.orderStatus = orderStatus;
         this.orderDate = orderDate;
         this.orderTime = orderTime;
@@ -28,7 +56,9 @@ public class Order {
         this.totalPrice = totalPrice;
         this.isPaid = isPaid;
         this.item = item;
-        this.user = user;
+        this.userId = userId;
+        this.userName=userName;
+        this.userPhone=userPhone;
     }
 
     public String getOrderId() {
@@ -95,12 +125,12 @@ public class Order {
         this.item = item;
     }
 
-    public User getUser() {
-        return user;
+    public String getUser() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(String userId) {
+        this.userId = userId;
     }
 
 

@@ -29,9 +29,9 @@ public class CookDAOImpl implements CookDAO {
     @Override
     public void add(Cook cook) throws ItemException {
         try{
-            String cookId = DAOUtil.getDatabaseReference().push().getKey();
-            cook.setUid(cookId);
-            DAOUtil.getDatabaseReference().child(cookPath).child(cookId).setValue(cook);
+//            String cookId = DAOUtil.getDatabaseReference().push().getKey();
+//            cook.setUid(cookId);
+            DAOUtil.getDatabaseReference().child(cookPath).child(cook.getUid()).setValue(cook);
             //DAOUtil.getDatabaseReference().child(itemPath).child(DAOUtil.getDatabaseReference().push().getKey()).setValue(item);
         }catch(Exception exception){
             Log.e(TAG,"Error adding item",exception);
@@ -51,7 +51,6 @@ public class CookDAOImpl implements CookDAO {
                             GenericTypeIndicator<Cook> genericTypeIndicator = new GenericTypeIndicator<Cook>() {
                             };
                             Cook cookInfo = dataSnapshot.getValue(genericTypeIndicator);
-                            System.out.println("Cook's detail.."+cookInfo.getName());
                             uiCookService.displayCook(cookInfo);
 
                         }

@@ -22,6 +22,10 @@ import com.fooddepot.service.impl.CookServiceImpl;
 import com.fooddepot.service.impl.ItemServiceImpl;
 import com.fooddepot.ui.api.UICookService;
 import com.fooddepot.vo.Cook;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -29,13 +33,16 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CookProfileFragment extends Fragment {
+public class CookProfileFragment extends Fragment implements UICookService {
 
 
     EditText description, nickname,addressLine1,addressLine2,state,country,zipcode;
     Button profilepic_btn,saveProfile_btn;
     ImageView profileImg;
     private static final int RESULT_LOAD_IMAGE=2;
+    private FirebaseUser currentUser;
+    private FirebaseAuth mAuth;
+    Cook cook;
     CookService cookService = null;
 
     public CookProfileFragment() {
@@ -54,6 +61,11 @@ public class CookProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mAuth= FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        cookService=new CookServiceImpl();
+        cookService.read(currentUser.getUid(),CookProfileFragment.this);
+
         description = (EditText) getView().findViewById(R.id.desc_edtxt);
         description.setMovementMethod(new ScrollingMovementMethod());
         nickname=(EditText)getView().findViewById(R.id.nickName_edtxt);
@@ -72,11 +84,20 @@ public class CookProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 cookService=new CookServiceImpl();
-                Cook cook =new Cook("-LBcVcgEgfsmxlrMD4n8",nickname.getText().toString(),addressLine1.getText().toString(),
-                        addressLine2.getText().toString(),state.getText().toString(),country.getText().toString(),
-                        zipcode.getText().toString(),description.getText().toString(),
-                        "name","email","phoneno","profilepicpath");
-                cookService.add(cook);
+                cook.setNickName(nickname.getText().toString());
+                cook.setAddressLine1(addressLine1.getText().toString());
+                cook.setAddressLine2(addressLine2.getText().toString());
+                cook.setState(state.getText().toString());
+                cook.setCountry(country.getText().toString());
+                cook.setZipcode(zipcode.getText().toString());
+                cook.setDesc(description.getText().toString());
+                cook.setProfilePicPath("profilepicpath");
+                cook.setEmail("email");
+//                Cook cook =new Cook("-LBcVcgEgfsmxlrMD4n8",nickname.getText().toString(),addressLine1.getText().toString(),
+//                        addressLine2.getText().toString(),state.getText().toString(),country.getText().toString(),
+//                        zipcode.getText().toString(),description.getText().toString(),
+//                        "name","email","phoneno","profilepicpath");
+                cookService.update(cook);
             }
         });
 
@@ -104,4 +125,22 @@ public class CookProfileFragment extends Fragment {
         }
     }
 
+    @Override
+    public void displayAllCooks(List<Cook> cook) {
+
+    }
+
+    @Override
+    public void displayCook(Cook cook) {
+        this.cook=cook;
+        description.setText(cook.getDesc());
+        nickname.setText(cook.getNickName());
+        addressLine1.setText(cook.getAddressLine1());
+        addressLine2.setText(cook.getAddressLine2());
+        state.setText(cook.getState());
+        country.setText(cook.getCountry());
+        zipcode.setText(cook.getZipcode());
+
+
+    }
 }

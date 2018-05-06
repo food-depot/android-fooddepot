@@ -43,9 +43,18 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void readAll(String cookId, UIItemService uiItemService) {
+    public void readAllforCook(String cookId, UIItemService uiItemService) {
         try {
-            itemDAO.readAll(cookId,uiItemService);
+            itemDAO.readAllforCook(cookId,uiItemService);
+        } catch (ItemException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void readAll(UIItemService uiItemService) {
+        try {
+            itemDAO.readAll(uiItemService);
         } catch (ItemException e) {
             e.printStackTrace();
         }
@@ -55,6 +64,15 @@ public class ItemServiceImpl implements ItemService {
     public void update(String itemId, Item item) {
         try {
             itemDAO.update(itemId,item);
+        } catch (ItemException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void searchItems(String searchKey,String searchValue,UIItemService uiItemService){
+        try {
+            itemDAO.searchItems(searchKey,searchValue,uiItemService);
         } catch (ItemException e) {
             e.printStackTrace();
         }

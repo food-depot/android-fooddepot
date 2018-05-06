@@ -1,7 +1,15 @@
 package com.fooddepot.activity;
 
 import com.fooddepot.R;
+import com.fooddepot.service.api.CookService;
+import com.fooddepot.service.api.ItemService;
+import com.fooddepot.service.impl.CookServiceImpl;
+import com.fooddepot.ui.api.UICookService;
+import com.fooddepot.ui.api.UIItemService;
+import com.fooddepot.vo.Cook;
+import com.fooddepot.vo.Item;
 
+import android.content.Intent;
 import android.support.design.widget.TabItem;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -9,6 +17,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.TabLayout;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+
+import java.util.List;
 
 public class CookActivity extends AppCompatActivity {
 
@@ -18,10 +29,16 @@ public class CookActivity extends AppCompatActivity {
     PageAdapter pageAdapter;
     TabItem profile,menu,orders;
 
+
+//    ItemService itemService = null;
+//    List<Item> itemList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cook);
+
+
         toolbar= (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
@@ -69,6 +86,7 @@ public class CookActivity extends AppCompatActivity {
 //        tabLayout.setupWithViewPager(viewPager);
 
     }
+
 }
 
 

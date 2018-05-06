@@ -7,13 +7,41 @@ import java.util.Date;
  */
 
 public class Item {
-    String name;
-    String category;
-    String description;
-    float price;
-    int quantity;
-    String photoPath;
-    String classification;
+    private  String name;
+    private String category;
+    private String description;
+    private float price;
+    private int quantity;
+    private String photoPath;
+    private String classification;
+    private String itemId;
+    private String dateStart;
+    private String dateEnd;
+    private String timeStart;
+    private String timeEnd;
+    private long reviews;
+    private float avgRating;
+    private String cookId;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+
+
+    public String getCookId() {
+        return cookId;
+    }
+
+    public void setCookId(String cookId) {
+        this.cookId = cookId;
+    }
+
 
     public String getItemId() {
         return itemId;
@@ -23,15 +51,14 @@ public class Item {
         this.itemId = itemId;
     }
 
-    String itemId;
-    String dateStart;
-    String dateEnd;
-    String timeStart;
-    String timeEnd;
-//    String schedule;
-    long reviews;
 
-    Cook cook;
+    public float getAvgRating() {
+        return avgRating;
+    }
+
+    public void setAvgRating(float avgRating) {
+        this.avgRating = avgRating;
+    }
 
 
     public Item(){
@@ -39,7 +66,7 @@ public class Item {
     }
     public Item(String name, String category, String description, float price, int quantity,
                 String photoPath, String classification, String dateStart,String dateEnd,
-                String timeStart,String timeEnd,long reviews, Cook cook) {
+                String timeStart,String timeEnd,long reviews, String cookId, float avgRating, String address) {
         this.name = name;
         this.category = category;
         this.description = description;
@@ -53,7 +80,9 @@ public class Item {
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
         this.reviews = reviews;
-        this.cook = cook;
+        this.cookId = cookId;
+        this.avgRating=avgRating;
+        this.address=address;
 
     }
 
@@ -153,27 +182,5 @@ public class Item {
         this.reviews = reviews;
     }
 
-//    public String getDate() {
-//        return date;
-//    }
-//
-//    public void setDate(String date) {
-//        this.date = date;
-//    }
-//
-//    public String getSchedule() {
-//        return schedule;
-//    }
-//
-//    public void setSchedule(String schedule) {
-//        this.schedule = schedule;
-//    }
 
-    public Cook getCook() {
-        return cook;
-    }
-
-    public void setCook(Cook cook) {
-        this.cook = cook;
-    }
 }

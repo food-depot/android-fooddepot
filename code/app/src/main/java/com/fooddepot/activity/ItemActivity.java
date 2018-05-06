@@ -53,6 +53,11 @@ public class ItemActivity extends Activity implements UIItemService, View.OnClic
     }
 
     @Override
+    public void displayItemsList(Map<String,Item> items){
+
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add_item:

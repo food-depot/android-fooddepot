@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="20dp"
     tools:context="com.fooddepot.activity.DetailActivity">
 
     <!--<include layout="@layout/toolbar" />-->
@@ -123,9 +124,10 @@
 
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="16dp"
-            android:background="#3556b3"
+            android:background="@color/colorPrimary"
             android:text="Buy"
-            android:textColor="#fff" />
+            android:textColor="#fff"
+            android:onClick="onBuy"/>
 
     </RelativeLayout>
 

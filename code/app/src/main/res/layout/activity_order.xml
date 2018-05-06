@@ -26,13 +26,13 @@
 
     </FrameLayout>
 
+
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary"
-        app:itemIconTint="#ffffff"
-        app:itemTextColor="#ffffff"
         app:menu="@menu/bottomnavigation"/>
 </RelativeLayout>

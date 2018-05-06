@@ -65,6 +65,7 @@
         android:isIndicator="true"/>
 
     <TextView
+        android:id="@+id/reviewCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/item_rating"

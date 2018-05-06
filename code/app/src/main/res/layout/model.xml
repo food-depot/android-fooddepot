@@ -15,7 +15,7 @@
         android:src="@drawable/artichokes" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/nameTxt"
@@ -55,7 +55,7 @@
         android:paddingLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView"
+        android:layout_alignStart="@+id/address"
         android:layout_alignTop="@+id/imageView"
         android:text="Name"
         android:textAppearance="?android:attr/textAppearanceMedium" />

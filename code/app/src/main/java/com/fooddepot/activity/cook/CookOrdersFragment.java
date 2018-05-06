@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,12 +21,19 @@ import android.widget.TextView;
 
 import com.fooddepot.BlankFragment;
 import com.fooddepot.R;
+import com.fooddepot.service.api.OrderService;
+import com.fooddepot.service.impl.OrderServiceImpl;
+import com.fooddepot.ui.api.UIOrderService;
+import com.fooddepot.vo.Order;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CookOrdersFragment extends Fragment {
+public class CookOrdersFragment extends Fragment implements UIOrderService {
     ListView orderList;
     String customer_names[]={"Rachel Green","Ross Gellar","Monica Gellar","Phoebe Buffay","Joe Tribiani"};
     String phonenos[]={"+1(345)345-3456","+1(345)345-3456","+1(345)345-3456","+1(345)345-3456","+1(345)345-3456"};
@@ -33,6 +42,11 @@ public class CookOrdersFragment extends Fragment {
     String qntys[]={"1","1","3","2","1"};
     String prices[]={"$4.99","$6.99","$5.98","$4.89","$9.80"};
     int imgs[]={R.drawable.profile_pic,R.drawable.profile_pic,R.drawable.profile_pic,R.drawable.profile_pic,R.drawable.profile_pic};
+
+
+    List<Order> orders;
+    OrderService orderService;
+    Order order;
 
 
     public CookOrdersFragment() {
@@ -50,18 +64,39 @@ public class CookOrdersFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        orderService = new OrderServiceImpl();
+        orderService.readByCook("-LBcVcgEgfsmxlrMD4n8", this);
+
         orderList = (ListView) getView().findViewById(R.id.orderList);
 
-        CustomAdapter blankFragment = new CustomAdapter();
+
+
+    }
+
+    @Override
+    public void displayAllOrders(List<Order> orders) {
+        this.orders=orders;
+
+        CustomAdapter blankFragment = new CustomAdapter(orders);
         orderList.setAdapter(blankFragment);
+    }
+
+    @Override
+    public void displayOrder(Order order) {
 
     }
 
     private class CustomAdapter extends BaseAdapter{
 
+        List<Order> orders;
+        CustomAdapter(List<Order> orders){
+           this.orders = orders;
+        }
+
         @Override
         public int getCount() {
-            return customer_names.length;
+            return orders.size();
         }
 
         @Override
@@ -83,19 +118,46 @@ public class CookOrdersFragment extends Fragment {
                 TextView itemName = (TextView)view.findViewById(R.id.itemName);
                 TextView qnty = (TextView)view.findViewById(R.id.qnty);
                 TextView price = (TextView)view.findViewById(R.id.price);
-//                Spinner order_status = (Spinner)view.findViewById(R.id.order_status);
+                final Spinner order_status = (Spinner)view.findViewById(R.id.order_status);
 //                RatingBar order_rating = (RatingBar)view.findViewById(R.id.order_rating);
                 ImageView customer_img = (ImageView)view.findViewById(R.id.customer_img);
 
-                customer_name.setText(customer_names[i]);
-                phone_txtvw.setText(phonenos[i]);
-                datetime_txtvw.setText(orderTime[i]);
-                itemName.setText(items[i]);
-                qnty.setText(qntys[i]);
-                price.setText(prices[i]);
+                final Order order = orders.get(i);
+
+                customer_name.setText(orders.get(i).getUserName());
+                phone_txtvw.setText(orders.get(i).getUserPhone());
+                datetime_txtvw.setText(orders.get(i).getOrderDate()+" "+orders.get(i).getOrderTime());
+                itemName.setText(orders.get(i).getItem().getName());
+                qnty.setText(orders.get(i).getQuantity());
+                price.setText(orders.get(i).getTotalPrice());
 //                order_status.setText([i]);
 //                order_rating.setText([i]);
                 customer_img.setImageResource(imgs[i]);
+
+            String orderStatus[]=getResources().getStringArray(R.array.order_status);
+            int catPos=0;
+            for(int t=0; i < orderStatus.length; i++)
+                if(orderStatus[i].equals(order.getOrderStatus()))
+                    catPos = i;
+
+            order_status.setSelection(catPos);
+            order_status.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int j, long l) {
+                    Log.d("FoodDepot",order_status.getSelectedItem().toString());
+
+                    Log.d("FoodDepot",order.getOrderStatus());
+                    if(!order_status.getSelectedItem().toString().equals(order.getOrderStatus())){
+                        order.setOrderStatus(order_status.getSelectedItem().toString());
+                        orderService.update(order);}
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
             return view;
         }
     }

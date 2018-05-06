@@ -21,22 +21,30 @@ import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.fooddepot.R;
+import com.fooddepot.activity.CookActivity;
+import com.fooddepot.service.api.CookService;
 import com.fooddepot.service.api.ItemService;
 
+import com.fooddepot.service.impl.CookServiceImpl;
 import com.fooddepot.service.impl.ItemServiceImpl;
 import com.fooddepot.storage.impl.ProfilePicServiceImpl;
+import com.fooddepot.ui.api.UICookService;
 import com.fooddepot.ui.api.UIItemService;
 import com.fooddepot.vo.Cook;
 import com.fooddepot.vo.Item;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-public class AddMenuActivity extends AppCompatActivity implements UIItemService, View.OnClickListener {
+public class AddMenuActivity extends AppCompatActivity implements UIItemService,UICookService, View.OnClickListener {
 
     private static final int RESULT_LOAD_IMAGE=1;
 
@@ -47,12 +55,20 @@ public class AddMenuActivity extends AppCompatActivity implements UIItemService,
     EditText name,price,description;
     Spinner category, classification;
     ItemService itemService = null;
+    CookService cookService;
     String ItemID;
+    private FirebaseUser currentUser;
+    private FirebaseAuth mAuth;
+    Cook cook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_menu);
+        mAuth= FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        cookService=new CookServiceImpl();
+        cookService.read(currentUser.getUid(),AddMenuActivity.this);
         Intent intent = getIntent();
 
         name=(EditText)findViewById(R.id.itemName_edtxt);
@@ -76,7 +92,7 @@ public class AddMenuActivity extends AppCompatActivity implements UIItemService,
         if(intent.hasExtra("ITEM_ID")){
             itemService = new ItemServiceImpl();
             ItemID= intent.getStringExtra("ITEM_ID");
-            Log.d("Id received",ItemID);
+//            Log.d("Id received",ItemID);
             itemService.read(ItemID, this);
             save_btn.setText("Update");
         }
@@ -164,18 +180,24 @@ public class AddMenuActivity extends AppCompatActivity implements UIItemService,
         switch(view.getId()){
             case R.id.save_btn://getText(R.id.save_btn):
                 itemService = new ItemServiceImpl();
-                Cook cook = new Cook();
-                cook.setUid("-LBcqrQy6acXwhclphBA");
+                String message="";
                 Item item = new Item(name.getText().toString(), category.getSelectedItem().toString(), description.getText().toString(),
                         Float.parseFloat(price.getText().toString()), Integer.parseInt(quantitybtn.getText().toString()),
                         "phototpath",classification.getSelectedItem().toString(),
-                        datebtn.getText().toString(),datetill.getText().toString(), timebtn.getText().toString(), timetill.getText().toString(),0,cook);
+                        datebtn.getText().toString(),datetill.getText().toString(), timebtn.getText().toString(), timetill.getText().toString(),0,
+                        cook.getUid(),0,cook.getAddressLine1()+cook.getAddressLine2()+cook.getState()+cook.getZipcode());
 
                 if(ItemID!=null){
                     itemService.update(ItemID,item);
+                    message="Item updated successfully";
                 }
-                else
+                else {
                     itemService.add(item);
+                    message = "Item added successfully";
+                }
+                Toast.makeText(AddMenuActivity.this, message, Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(this,CookActivity.class);
+                startActivity(i);
                 break;
         }
 
@@ -183,6 +205,11 @@ public class AddMenuActivity extends AppCompatActivity implements UIItemService,
 
     @Override
     public void displayAllItems(List<Item> items) {
+
+    }
+
+    @Override
+    public void displayItemsList(Map<String,Item> items){
 
     }
 
@@ -214,18 +241,19 @@ public class AddMenuActivity extends AppCompatActivity implements UIItemService,
 
 
         Log.d("name",item.getName());
-//        Log.d("category",category.getSelectedItem().toString());
         Log.d("description",item.getDescription());
-//        Log.d("price","camehere");
-//        Log.d("quantitybtn",items.getCategory());
-//        Log.d("classification","camehere");
-//        Log.d("datebtn","camehere");
-//        Log.d("datetill",items.getCategory());
-//        Log.d("timebtn","camehere");
-//        Log.d("timetill","camehere");
-////        items.setCategory("CatNew");
-////        itemService.update(ItemID,items);
-////        items.getCategory();
+
+    }
+
+    @Override
+    public void displayAllCooks(List<Cook> cook) {
+
+    }
+
+    @Override
+    public void displayCook(Cook cook) {
+        this.cook=cook;
+
     }
 
 

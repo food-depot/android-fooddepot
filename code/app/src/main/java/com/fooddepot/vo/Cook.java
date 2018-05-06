@@ -1,6 +1,7 @@
 package com.fooddepot.vo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ravisha on 4/26/18.
@@ -20,11 +21,31 @@ public class Cook {
     String zipcode;
     String desc;
 
+    public void setItems(Map<String, Item> items) {
+        this.items = items;
+    }
 
-    List<Item> items;
+    Map<String, Item> items;
+//    List<Item> items;
 
     public Cook(){
 
+    }
+
+
+    public Cook(String uid,String name,String phoneNumber,String addressLine1,
+                String addressLine2, String state, String country, String zipcode,
+                String profilePicPath, String email){
+        this.uid=uid;
+        this.name=name;
+        this.phoneNumber=phoneNumber;
+        this.addressLine1=addressLine1;
+        this.addressLine2=addressLine2;
+        this.state=state;
+        this.country=country;
+        this.zipcode=zipcode;
+        this.profilePicPath=profilePicPath;
+        this.email=email;
     }
 
     public Cook(String uid, String nickName, String addressLine1, String addressLine2,String state,
@@ -143,11 +164,11 @@ public class Cook {
     }
 
 
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
+//    public List<Item> getItems() {
+//        return items;
+//    }
+//
+//    public void setItems(List<Item> items) {
+//        this.items = items;
+//    }
 }

@@ -1,5 +1,8 @@
 package com.fooddepot.vo;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by mudrita on 5/3/18.
  */
@@ -14,14 +17,27 @@ public class User {
     String addressLine1;
     String addressLine2;
     String state;
+    String country;
+    String zipcode;
+//    String userType;
+
+
+
+    Map<String, Order> orderMap;
+//    List<Order> orderList;
 
     public User(){
 
     }
 
-    public User(String uid, String name, String email, String phoneNumber, String profilePicPath,
+    public User(String uid,String name, String phoneNumber ){
+        this.uid=uid;
+        this.name=name;
+        this.phoneNumber=phoneNumber;
+    }
+
+    public User(String name, String email, String phoneNumber, String profilePicPath,
                 String addressLine1, String addressLine2, String state, String country, String zipcode) {
-        this.uid = uid;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -113,6 +129,13 @@ public class User {
         this.zipcode = zipcode;
     }
 
-    String country;
-    String zipcode;
+    public Map<String, Order> getOrderMap() {
+        return orderMap;
+    }
+
+    public void setOrderMap(Map<String, Order> orderMap) {
+        this.orderMap = orderMap;
+    }
+
+
 }

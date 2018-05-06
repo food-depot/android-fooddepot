@@ -13,6 +13,7 @@ import java.util.Map;
 public interface UIItemService {
     void displayAllItems(List<Item> items);
     void displayItem(Item item);
+    void displayItemsList(Map<String,Item> items);
 //    void displayUser(User user);
 
 }
